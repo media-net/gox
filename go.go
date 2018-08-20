@@ -31,6 +31,7 @@ type CompileOpts struct {
 	Cgo         bool
 	Rebuild     bool
 	GoCmd       string
+	GoRace bool
 }
 
 // GoCrossCompile
@@ -104,6 +105,10 @@ func GoCrossCompile(opts *CompileOpts) error {
 	}
 
 	args := []string{"build"}
+	if opts.GoRace {
+		//opts.GoCmd = opts.GoCmd + " -race"
+		args = append(args, "-race")
+	}
 	if opts.Rebuild {
 		args = append(args, "-a")
 	}
@@ -114,7 +119,6 @@ func GoCrossCompile(opts *CompileOpts) error {
 		"-tags", opts.Tags,
 		"-o", outputPathReal,
 		opts.PackagePath)
-
 	_, err = execGo(opts.GoCmd, env, chdir, args...)
 	return err
 }

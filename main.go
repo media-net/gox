@@ -24,7 +24,7 @@ func realMain() int {
 	var tags string
 	var verbose bool
 	var flagGcflags, flagAsmflags string
-	var flagCgo, flagRebuild, flagListOSArch bool
+	var flagCgo, flagRebuild, flagListOSArch, flagRace bool
 	var flagGoCmd string
 	flags := flag.NewFlagSet("gox", flag.ExitOnError)
 	flags.Usage = func() { printUsage() }
@@ -39,6 +39,7 @@ func realMain() int {
 	flags.BoolVar(&verbose, "verbose", false, "verbose")
 	flags.BoolVar(&flagCgo, "cgo", false, "")
 	flags.BoolVar(&flagRebuild, "rebuild", false, "")
+	flags.BoolVar(&flagRace, "race", false, "")
 	flags.BoolVar(&flagListOSArch, "osarch-list", false, "")
 	flags.StringVar(&flagGcflags, "gcflags", "", "")
 	flags.StringVar(&flagAsmflags, "asmflags", "", "")
@@ -136,6 +137,7 @@ func realMain() int {
 					Cgo:         flagCgo,
 					Rebuild:     flagRebuild,
 					GoCmd:       flagGoCmd,
+					GoRace:flagRace,
 				}
 
 				// Determine if we have specific CFLAGS or LDFLAGS for this
